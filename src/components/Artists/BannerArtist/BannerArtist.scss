@@ -1,0 +1,42 @@
+@import '../../../scss/index.scss';
+
+.banner-artist {
+	position: relative;
+	top: -60px;
+	height: 400px;
+	background-repeat: no-repeat;
+	background-position: center top;
+	background-size: cover;
+	display: flex;
+	align-items: flex-end;
+
+	&__gradient {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		background: linear-gradient(
+			to bottom,
+			transparent 0%,
+			transparent 40%,
+			$background-grey-dark-light
+		);
+	}
+
+	&__info {
+		z-index: 1;
+		margin: 0 0 70px 50px;
+
+		h4 {
+			margin-bottom: 0px;
+			font-size: 14px;
+			font-weight: normal;
+		}
+
+		h1 {
+			margin-top: 0px;
+			font-size: 80px;
+		}
+	}
+}
