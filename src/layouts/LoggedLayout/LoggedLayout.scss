@@ -1,27 +1,32 @@
-@import "../../scss/index.scss";
+@import '../../scss/index.scss';
 
 .ui.grid.logged-layout {
-  background-color: $background-grey-dark-light;
-  min-height: 100vh;
-  margin: 0;
+	background-color: $background-grey-dark-light;
+	height: 100vh;
+	margin: 0;
 
-  > .row {
-    padding: 0;
+	> .row {
+		padding: 0;
 
-    &:first-of-type {
-      height: 90vh;
-    }
+		&:first-of-type {
+			height: 90vh;
+		}
 
-    &:last-of-type {
-      height: 10vh;
-    }
+		&:last-of-type {
+			height: 10vh;
+		}
 
-    > .column {
-      padding: 0;
-    }
-  }
+		> .column {
+			padding: 0;
+		}
+	}
 
-  .content {
-    
-  }
+	.content {
+		overflow: scroll;
+		height: calc(100vh - 105px);
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+	}
 }

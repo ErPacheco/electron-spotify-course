@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { map } from 'lodash';
 import firebase from '../../utils/Firebase';
 import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
 
 import './Artists.scss';
 
