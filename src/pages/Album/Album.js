@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
 import { Loader } from 'semantic-ui-react';
+import { map } from 'lodash';
+import ListSongs from '../../components/Songs/ListSongs';
 import firebase from '../../utils/Firebase';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
@@ -10,17 +12,20 @@ import './Album.scss';
 const db = firebase.firestore();
 
 function Album(props) {
-	const { match } = props;
+	const { match, playerSong } = props;
 	const [album, setAlbum] = useState(null);
 	const [albumImage, setAlbumImage] = useState(null);
 	const [artist, setArtist] = useState(null);
+	const [songs, setSongs] = useState([]);
 
 	useEffect(() => {
 		db.collection('albums')
 			.doc(match?.params?.id)
 			.get()
 			.then((response) => {
-				setAlbum(response.data());
+				const data = response.data();
+				data.id = response.id;
+				setAlbum(data);
 			});
 	}, [match]);
 
@@ -32,6 +37,24 @@ function Album(props) {
 				.getDownloadURL()
 				.then((url) => {
 					setAlbumImage(url);
+				});
+		}
+	}, [album]);
+
+	useEffect(() => {
+		if (album) {
+			db.collection('songs')
+				.where('album', '==', album.id)
+				.get()
+				.then((response) => {
+					const arraySongs = [];
+					map(response?.docs, (song) => {
+						const data = song.data();
+						data.id = song.id;
+						arraySongs.push(data);
+					});
+
+					setSongs(arraySongs);
 				});
 		}
 	}, [album]);
@@ -66,7 +89,11 @@ function Album(props) {
 				</div>
 			</div>
 			<div className='album__songs'>
-				<p>Lista de canciones</p>
+				<ListSongs
+					songs={songs}
+					albumImage={albumImage}
+					playerSong={playerSong}
+				/>
 			</div>
 		</div>
 	);

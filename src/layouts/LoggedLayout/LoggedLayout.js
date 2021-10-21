@@ -5,6 +5,8 @@ import Routes from '../../routes/Routes';
 import MenuLeft from '../../components/MenuLeft';
 import TopBar from '../../components/TopBar/TopBar';
 import Player from '../../components/Player';
+import firebase from '../../utils/Firebase';
+import 'firebase/compat/storage';
 
 import './LoggedLayout.scss';
 
@@ -12,12 +14,19 @@ export default function LoggedLayout(props) {
 	const { user, setReloadApp } = props;
 	const [songData, setSongData] = useState(null);
 
-	const playerSong = (albumImage, songName, songUrl) => {
-		// setSongData({
-		// 	url: songUrl,
-		// 	image: albumImage,
-		// 	name: songName,
-		// });
+	const playerSong = (albumImage, songName, songNameFile) => {
+		console.log(albumImage);
+		firebase
+			.storage()
+			.ref(`song/${songNameFile}`)
+			.getDownloadURL()
+			.then((url) => {
+				setSongData({
+					url,
+					image: albumImage,
+					name: songName,
+				});
+			});
 	};
 
 	return (
@@ -29,7 +38,11 @@ export default function LoggedLayout(props) {
 					</Grid.Column>
 					<Grid.Column className='content' width={13}>
 						<TopBar user={user} />
-						<Routes user={user} setReloadApp={setReloadApp} />
+						<Routes
+							user={user}
+							setReloadApp={setReloadApp}
+							playerSong={playerSong}
+						/>
 					</Grid.Column>
 				</Grid.Row>
 				<Grid.Row>
